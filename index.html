@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unicommerce PM Workflow System</title>
+<style>
+  :root {
+    --blue: #0087d4;
+    --blue-dark: #006aaa;
+    --blue-light: #e8f4fd;
+    --blue-xlight: #f0f8ff;
+    --nav: #1a2332;
+    --dark: #232727;
+    --text: #2d3748;
+    --muted: #718096;
+    --border: #e2e8f0;
+    --bg: #f5f7fa;
+    --white: #ffffff;
+    --green: #00a651;
+    --green-light: #e6f7ef;
+    --yellow: #f59e0b;
+    --yellow-light: #fef3c7;
+    --red: #e53e3e;
+    --red-light: #fff5f5;
+    --purple: #7c3aed;
+    --purple-light: #f3f0ff;
+    --radius: 10px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    --shadow-hover: 0 6px 24px rgba(0,135,212,0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--nav);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-logo {
+    width: 32px;
+    height: 32px;
+    background: var(--blue);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 14px;
+    color: white;
+    letter-spacing: -0.5px;
+  }
+
+  .nav-title {
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+  }
+
+  .nav-subtitle {
+    color: rgba(255,255,255,0.45);
+    font-size: 12px;
+    margin-top: 1px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 4px;
+  }
+
+  .nav-links a {
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    font-size: 13px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: all 0.15s;
+  }
+
+  .nav-links a:hover {
+    color: white;
+    background: rgba(255,255,255,0.1);
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--nav) 0%, #1e3a5f 100%);
+    padding: 64px 40px 72px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(0,135,212,0.25) 0%, transparent 70%);
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -80px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(0,135,212,0.12) 0%, transparent 70%);
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0,135,212,0.25);
+    border: 1px solid rgba(0,135,212,0.4);
+    color: #7ec8f0;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    color: white;
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    line-height: 1.15;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero h1 span { color: #5bc4f5; }
+
+  .hero p {
+    color: rgba(255,255,255,0.65);
+    font-size: 17px;
+    max-width: 560px;
+    margin: 0 auto 36px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-size: 36px;
+    font-weight: 800;
+    color: white;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* CONTAINER */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  /* SECTION */
+  section {
+    padding: 60px 0;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--dark);
+    letter-spacing: -0.8px;
+    margin-bottom: 8px;
+  }
+
+  .section-sub {
+    font-size: 15px;
+    color: var(--muted);
+    margin-bottom: 40px;
+    max-width: 580px;
+  }
+
+  /* PROBLEM STRIP */
+  .problem-strip {
+    background: #fff8f0;
+    border-top: 1px solid #fed7aa;
+    border-bottom: 1px solid #fed7aa;
+    padding: 28px 40px;
+  }
+
+  .problem-strip .container {
+    display: flex;
+    align-items: flex-start;
+    gap: 48px;
+  }
+
+  .problem-intro {
+    flex-shrink: 0;
+  }
+
+  .problem-intro .label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #c05621;
+    margin-bottom: 4px;
+  }
+
+  .problem-intro h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #7b341e;
+  }
+
+  .problems {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .problem-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: white;
+    border: 1px solid #fed7aa;
+    border-radius: 8px;
+    padding: 12px 16px;
+    flex: 1;
+    min-width: 220px;
+  }
+
+  .problem-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .problem-text strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: #7b341e;
+  }
+
+  .problem-text span {
+    font-size: 12px;
+    color: #9c4221;
+    opacity: 0.8;
+  }
+
+  /* WORKFLOW PHASES */
+  .phases {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .phase {
+    display: flex;
+    gap: 32px;
+    position: relative;
+  }
+
+  .phase:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 27px;
+    top: 72px;
+    bottom: -32px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--blue) 0%, rgba(0,135,212,0.15) 100%);
+    z-index: 0;
+  }
+
+  .phase-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+
+  .phase-num {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 800;
+    border: 3px solid;
+    background: white;
+    flex-shrink: 0;
+  }
+
+  .phase-right {
+    flex: 1;
+    padding-bottom: 40px;
+  }
+
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 6px;
+    margin-top: 12px;
+  }
+
+  .phase-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 4px;
+  }
+
+  .phase-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--dark);
+    letter-spacing: -0.5px;
+  }
+
+  .phase-desc {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+
+  /* SKILL CARD */
+  .skill-card {
+    background: white;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+
+  .skill-card:hover {
+    box-shadow: var(--shadow-hover);
+  }
+
+  .skill-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 22px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .skill-header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .skill-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .skill-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--dark);
+  }
+
+  .skill-trigger {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  .skill-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-right: 8px;
+  }
+
+  .skill-toggle {
+    color: var(--muted);
+    font-size: 18px;
+    transition: transform 0.2s;
+    line-height: 1;
+  }
+
+  .skill-body {
+    display: none;
+    border-top: 1px solid var(--border);
+  }
+
+  .skill-body.open {
+    display: block;
+  }
+
+  .skill-toggle.open {
+    transform: rotate(180deg);
+  }
+
+  .skill-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  .skill-col {
+    padding: 20px 22px;
+  }
+
+  .skill-col:first-child {
+    border-right: 1px solid var(--border);
+  }
+
+  .skill-col-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .io-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: var(--text);
+  }
+
+  .io-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+
+  .skill-rules {
+    padding: 16px 22px;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+  }
+
+  .skill-rules-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .rule-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 12.5px;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .rule-icon {
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* SPECIAL: mode card inside skill */
+  .mode-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 0 22px 20px;
+  }
+
+  .mode-card {
+    border-radius: 8px;
+    padding: 14px 16px;
+    border: 1px solid;
+  }
+
+  .mode-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .mode-name {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .mode-trigger {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* LOOP */
+  .loop-banner {
+    background: linear-gradient(135deg, var(--blue-light) 0%, #dbeafe 100%);
+    border: 1px solid rgba(0,135,212,0.2);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-top: 8px;
+  }
+
+  .loop-icon {
+    font-size: 40px;
+    flex-shrink: 0;
+  }
+
+  .loop-text h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--blue-dark);
+    margin-bottom: 4px;
+  }
+
+  .loop-text p {
+    font-size: 13px;
+    color: #2b6cb0;
+  }
+
+  .loop-arrow {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+
+  .loop-step {
+    background: white;
+    border: 1px solid rgba(0,135,212,0.3);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--blue);
+  }
+
+  .loop-arr {
+    color: var(--blue);
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  /* DECISION GRID */
+  .decision-grid {
+    background: white;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .decision-grid table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .decision-grid thead {
+    background: var(--nav);
+  }
+
+  .decision-grid thead th {
+    padding: 14px 18px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .decision-grid tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+
+  .decision-grid tbody tr:hover {
+    background: var(--blue-xlight);
+  }
+
+  .decision-grid tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .decision-grid td {
+    padding: 13px 18px;
+    font-size: 13.5px;
+    color: var(--text);
+    vertical-align: top;
+  }
+
+  .decision-grid td:first-child {
+    font-style: italic;
+    color: var(--muted);
+    border-right: 1px solid var(--border);
+    width: 38%;
+  }
+
+  .decision-grid td:nth-child(2) {
+    border-right: 1px solid var(--border);
+    width: 32%;
+  }
+
+  .skill-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* TICKET FORMAT */
+  .ticket-format {
+    background: white;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .ticket-format table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .ticket-format thead {
+    background: var(--dark);
+  }
+
+  .ticket-format thead th {
+    padding: 14px 20px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .ticket-format tbody tr {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ticket-format tbody tr:last-child { border-bottom: none; }
+
+  .ticket-format tbody tr:hover { background: var(--bg); }
+
+  .ticket-format td {
+    padding: 14px 20px;
+    font-size: 13.5px;
+    color: var(--text);
+    vertical-align: top;
+  }
+
+  .ticket-format td:first-child {
+    width: 5%;
+    text-align: center;
+    font-size: 18px;
+  }
+
+  .ticket-format td:nth-child(2) {
+    width: 20%;
+    font-weight: 700;
+    color: var(--dark);
+    border-right: 1px solid var(--border);
+  }
+
+  .ticket-format td:nth-child(3) {
+    width: 37%;
+    border-right: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .ticket-format td:last-child {
+    font-size: 12px;
+    color: var(--red);
+    font-style: italic;
+  }
+
+  /* RULES */
+  .rules-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .rules-card {
+    background: white;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .rules-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .rules-header-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+
+  .rules-header h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--dark);
+  }
+
+  .rules-header span {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .rules-body {
+    padding: 16px 20px;
+  }
+
+  .rule {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13.5px;
+  }
+
+  .rule:last-child { border-bottom: none; }
+
+  .rule-num {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--nav);
+    padding: 32px 40px;
+    text-align: center;
+  }
+
+  footer p {
+    color: rgba(255,255,255,0.4);
+    font-size: 13px;
+  }
+
+  footer strong {
+    color: rgba(255,255,255,0.7);
+  }
+
+  /* PHASE COLORS */
+  .phase-1 .phase-num { color: #7c3aed; border-color: #7c3aed; }
+  .phase-1 .phase-tag { background: var(--purple-light); color: var(--purple); }
+
+  .phase-2 .phase-num { color: var(--blue); border-color: var(--blue); }
+  .phase-2 .phase-tag { background: var(--blue-light); color: var(--blue-dark); }
+
+  .phase-3 .phase-num { color: var(--green); border-color: var(--green); }
+  .phase-3 .phase-tag { background: var(--green-light); color: #065f46; }
+
+  .phase-4 .phase-num { color: var(--yellow); border-color: var(--yellow); }
+  .phase-4 .phase-tag { background: var(--yellow-light); color: #92400e; }
+
+  .phase-5 .phase-num { color: var(--red); border-color: #fc8181; }
+  .phase-5 .phase-tag { background: var(--red-light); color: var(--red); }
+
+  /* divider */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 0;
+  }
+
+  .comms-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 0 22px 20px;
+  }
+
+  .comms-item {
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 12.5px;
+  }
+
+  .comms-item strong {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-logo">UC</div>
+    <div>
+      <div class="nav-title">PM Workflow System</div>
+      <div class="nav-subtitle">Unicommerce · Internal</div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a href="#workflow">Workflow</a>
+    <a href="#when-to-use">When to Use</a>
+    <a href="#ticket-format">Ticket Format</a>
+    <a href="#rules">Team Rules</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">🚀 Internal PM Tooling</div>
+  <h1>From Requirement to Release.<br><span>No steps skipped.</span></h1>
+  <p>A structured AI-assisted workflow that takes a raw business requirement and walks it through validation, discovery, engineering handoff, shipping, and measurement.</p>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">4</div>
+      <div class="stat-label">AI Skills</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">5</div>
+      <div class="stat-label">Phases</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">0</div>
+      <div class="stat-label">Manual Gaps</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Loop</div>
+    </div>
+  </div>
+</div>
+
+<!-- PROBLEM STRIP -->
+<div class="problem-strip">
+  <div class="container">
+    <div class="problem-intro">
+      <div class="label">⚠️ Before this</div>
+      <h3>3 failure modes</h3>
+    </div>
+    <div class="problems">
+      <div class="problem-item">
+        <div class="problem-icon">📋</div>
+        <div class="problem-text">
+          <strong>Vague requirements got built</strong>
+          <span>CRs moved to tickets without validation. Engineers built the wrong thing.</span>
+        </div>
+      </div>
+      <div class="problem-item">
+        <div class="problem-icon">🔀</div>
+        <div class="problem-text">
+          <strong>No consistent ticket format</strong>
+          <span>Every ticket looked different. Background mixed with solution. QA guessed scope.</span>
+        </div>
+      </div>
+      <div class="problem-item">
+        <div class="problem-icon">🕳️</div>
+        <div class="problem-text">
+          <strong>Loop never closed</strong>
+          <span>Nothing shipped got reviewed against its PRD. We didn't know what worked.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WORKFLOW -->
+<section id="workflow">
+  <div class="container">
+    <div class="section-label">End-to-End Workflow</div>
+    <div class="section-title">5 Phases. 4 Skills. One Loop.</div>
+    <div class="section-sub">Each phase has a defined input, a skill that processes it, and a specific output that feeds the next phase.</div>
+
+    <div class="phases">
+
+      <!-- PHASE 1: INTAKE -->
+      <div class="phase phase-1">
+        <div class="phase-left">
+          <div class="phase-num">1</div>
+        </div>
+        <div class="phase-right">
+          <div class="phase-header">
+            <span class="phase-tag">Intake</span>
+          </div>
+          <div class="phase-title">Validate the Requirement</div>
+          <div class="phase-desc">Before anything is prioritised or built — is this a real, well-defined problem?</div>
+
+          <div class="skill-card">
+            <div class="skill-header" onclick="toggle(this)">
+              <div class="skill-header-left">
+                <div class="skill-icon" style="background:#f3f0ff;">🔍</div>
+                <div>
+                  <div class="skill-name">cr-review</div>
+                  <div class="skill-trigger">Trigger: paste a Jira CR from ops / sales / CS and say "review this CR"</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span class="skill-badge" style="background:#f3f0ff;color:#7c3aed;">New Skill</span>
+                <span class="skill-toggle">▼</span>
+              </div>
+            </div>
+            <div class="skill-body">
+              <div class="skill-grid">
+                <div class="skill-col">
+                  <div class="skill-col-label">📥 Input</div>
+                  <div class="io-item"><div class="io-dot" style="background:#7c3aed;"></div>Rough Jira CR ticket from ops / sales / CS</div>
+                </div>
+                <div class="skill-col">
+                  <div class="skill-col-label">📤 Output</div>
+                  <div class="io-item"><div class="io-dot" style="background:#00a651;"></div>Structured CR: Use Case → Problem → Impact → Expected Outcome</div>
+                  <div class="io-item"><div class="io-dot" style="background:#00a651;"></div>Section scores: ✅ Clear / ⚠️ Weak / ❌ Missing</div>
+                  <div class="io-item"><div class="io-dot" style="background:#00a651;"></div>Up to 5 targeted clarification questions</div>
+                  <div class="io-item"><div class="io-dot" style="background:#00a651;"></div>Verdict: Accept / Needs Clarification / Duplicate / Reject</div>
+                </div>
+              </div>
+              <div class="skill-rules">
+                <div class="skill-rules-label">Key Rules</div>
+                <div class="rule-item"><span class="rule-icon">✅</span> Accept → moves to Discovery (PRD)</div>
+                <div class="rule-item"><span class="rule-icon">⚠️</span> Needs Clarification → send back to requester with specific questions (not generic ones)</div>
+                <div class="rule-item"><span class="rule-icon">❌</span> Reject → respond with reason: config issue / bug / out of scope / support ticket</div>
+                <div class="rule-item"><span class="rule-icon">🔁</span> Possible Duplicate → check against backlog before accepting</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 2: DISCOVERY -->
+      <div class="phase phase-2">
+        <div class="phase-left">
+          <div class="phase-num">2</div>
+        </div>
+        <div class="phase-right">
+          <div class="phase-header">
+            <span class="phase-tag">Discovery</span>
+          </div>
+          <div class="phase-title">Write the PRD</div>
+          <div class="phase-desc">Turn an accepted CR into a structured PRD that gets stakeholder alignment before engineering starts.</div>
+
+          <div class="skill-card">
+            <div class="skill-header" onclick="toggle(this)">
+              <div class="skill-header-left">
+                <div class="skill-icon" style="background:#e8f4fd;">📝</div>
+                <div>
+                  <div class="skill-name">prd-generator</div>
+                  <div class="skill-trigger">Trigger: "write a PRD", "create a spec", "draft requirements for X"</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span class="skill-badge" style="background:#e8f4fd;color:#0087d4;">2 Modes</span>
+                <span class="skill-toggle">▼</span>
+              </div>
+            </div>
+            <div class="skill-body">
+              <div class="mode-row">
+                <div class="mode-card" style="background:#f0f8ff;border-color:#bfdbfe;">
+                  <div class="mode-label" style="color:#1e40af;">Mode A · Write</div>
+                  <div class="mode-name" style="color:#1e3a8a;">New PRD</div>
+                  <div class="mode-trigger">Problem → Evidence → Success Criteria → Solution → Risks → Dependencies → Sign-off</div>
+                </div>
+                <div class="mode-card" style="background:#fef3c7;border-color:#fcd34d;">
+                  <div class="mode-label" style="color:#92400e;">Mode B · Review</div>
+                  <div class="mode-name" style="color:#78350f;">Post-Launch Check</div>
+                  <div class="mode-trigger">Paste PRD + metrics → score each success criterion Hit / Partial / Missed / No Data</div>
+                </div>
+              </div>
+              <div class="skill-grid" style="border-top:1px solid var(--border);">
+                <div class="skill-col">
+                  <div class="skill-col-label">📥 Mode A Input</div>
+                  <div class="io-item"><div class="io-dot" style="background:#0087d4;"></div>Accepted CR from Phase 1</div>
+                  <div class="io-item"><div class="io-dot" style="background:#0087d4;"></div>Context files (product.md, personas.md)</div>
+                  <div class="io-item"><div class="io-dot" style="background:#0087d4;"></div>Evidence: research, data, feedback</div>
+                </div>
+                <div class="skill-col">
+                  <div class="skill-col-label">📤 Mode A Output</div>
+                  <div class="io-item"><div class="io-dot" style="background:#00a651;"></div>Problem + Evidence (validated vs assumed)</div>
+                  <div class="io-item"><div class="io-dot" style="background:#00a651;"></div>Lagging + Leading success criteria</div>
+                  <div class="io-item"><div class="io-dot" style="background:#00a651;"></div>User stories, Non-goals, Risks (V/U/F/V)</div>
+                  <div class="io-item"><div class="io-dot" style="background:#00a651;"></div>Sign-off table + handoff prompt to Phase 3</div>
+                </div>
+              </div>
+              <div class="skill-rules">
+                <div class="skill-rules-label">Handoff</div>
+                <div class="rule-item"><span class="rule-icon">🔗</span> After PRD is done, skill always asks: <em>"Ready to move to engineering? I can convert this to a Jira ticket using the jira-ticket skill."</em></div>
+                <div class="rule-item"><span class="rule-icon">📊</span> Mode B trigger: "post-launch review", "did we hit our goals", paste PRD + current metrics data</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 3: BUILD -->
+      <div class="phase phase-3">
+        <div class="phase-left">
+          <div class="phase-num">3</div>
+        </div>
+        <div class="phase-right">
+          <div class="phase-header">
+            <span class="phase-tag">Build & Handoff</span>
+          </div>
+          <div class="phase-title">Write the Ticket. Review It. Hand It Off.</div>
+          <div class="phase-desc">Convert the approved PRD into an engineering-ready Jira ticket, then score it for completeness before handing to the team.</div>
+
+          <div class="skill-card">
+            <div class="skill-header" onclick="toggle(this)">
+              <div class="skill-header-left">
+                <div class="skill-icon" style="background:#e6f7ef;">🎫</div>
+                <div>
+                  <div class="skill-name">jira-ticket</div>
+                  <div class="skill-trigger">Trigger: "make this a ticket", "turn this into a story", "write a Jira ticket for X"</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span class="skill-badge" style="background:#e6f7ef;color:#065f46;">Updated</span>
+                <span class="skill-toggle">▼</span>
+              </div>
+            </div>
+            <div class="skill-body">
+              <div class="skill-grid">
+                <div class="skill-col">
+                  <div class="skill-col-label">📥 Input</div>
+                  <div class="io-item"><div class="io-dot" style="background:#00a651;"></div>Approved PRD from Phase 2</div>
+                  <div class="io-item"><div class="io-dot" style="background:#00a651;"></div>Problem description (informal is fine)</div>
+                  <div class="io-item"><div class="io-dot" style="background:#00a651;"></div>Support escalation or API issue description</div>
+                </div>
+                <div class="skill-col">
+                  <div class="skill-col-label">📤 Output</div>
+                  <div class="io-item"><div class="io-dot" style="background:#00a651;"></div>Background → Pain Point → Solution → Scope of Work → Testing → Release Notes</div>
+                  <div class="io-item"><div class="io-dot" style="background:#00a651;"></div>User story with correct persona</div>
+                  <div class="io-item"><div class="io-dot" style="background:#00a651;"></div>Option tables, fallback behaviour, QA checklist</div>
+                </div>
+              </div>
+              <div class="skill-rules">
+                <div class="skill-rules-label">Built-in Checks After Every Ticket</div>
+                <div class="rule-item"><span class="rule-icon">🎨</span> <strong>Design handoff:</strong> scans ticket for UI signals (new page, modal, form, table column, badge, button). If found → prompts to build a mock using the <em>unicommerce-design-system</em> skill. Silent if backend-only.</div>
+                <div class="rule-item"><span class="rule-icon">📣</span> <strong>Release comms prompt:</strong> always closes with — <em>"When this ships, paste it back and tell me the work type → I'll generate the seller announcement, internal team update, changelog entry, and Notion release page."</em></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="skill-card">
+            <div class="skill-header" onclick="toggle(this)">
+              <div class="skill-header-left">
+                <div class="skill-icon" style="background:#e6f7ef;">✅</div>
+                <div>
+                  <div class="skill-name">prd-jira-review</div>
+                  <div class="skill-trigger">Trigger: "review this ticket", "is this ready to hand off?", "check this before I share it"</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span class="skill-badge" style="background:#e6f7ef;color:#065f46;">New Skill</span>
+                <span class="skill-toggle">▼</span>
+              </div>
+            </div>
+            <div class="skill-body">
+              <div class="skill-grid">
+                <div class="skill-col">
+                  <div class="skill-col-label">📥 Input</div>
+                  <div class="io-item"><div class="io-dot" style="background:#00a651;"></div>Jira ticket (any format, pasted text)</div>
+                  <div class="io-item"><div class="io-dot" style="background:#00a651;"></div>Strategy PRD → auto-detected and redirected</div>
+                </div>
+                <div class="skill-col">
+                  <div class="skill-col-label">📤 Output</div>
+                  <div class="io-item"><div class="io-dot" style="background:#00a651;"></div>Section scorecard: ✅/⚠️/❌ per section</div>
+                  <div class="io-item"><div class="io-dot" style="background:#00a651;"></div>Domain checks: API impact, seller impact, feasibility</div>
+                  <div class="io-item"><div class="io-dot" style="background:#00a651;"></div>Verdict + top 3 fixes before handoff</div>
+                </div>
+              </div>
+              <div class="skill-rules">
+                <div class="skill-rules-label">Smart Detection (Step 0)</div>
+                <div class="rule-item"><span class="rule-icon">🔎</span> Detects if input is an <strong>engineering ticket</strong> (Background/Release Notes format) → runs full scorecard</div>
+                <div class="rule-item"><span class="rule-icon">📄</span> Detects if input is a <strong>strategy PRD</strong> (Success Criteria/Sign-off format) → stops and redirects to jira-ticket skill first</div>
+                <div class="rule-item"><span class="rule-icon">⚠️</span> If ambiguous → scores what it can, flags the mismatch explicitly</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 4: SHIP -->
+      <div class="phase phase-4">
+        <div class="phase-left">
+          <div class="phase-num">4</div>
+        </div>
+        <div class="phase-right">
+          <div class="phase-header">
+            <span class="phase-tag">Ship</span>
+          </div>
+          <div class="phase-title">Generate Release Communications</div>
+          <div class="phase-desc">When the feature ships, paste the ticket back with the work type — get all 4 comms outputs in one go.</div>
+
+          <div class="skill-card">
+            <div class="skill-header" onclick="toggle(this)">
+              <div class="skill-header-left">
+                <div class="skill-icon" style="background:#fef3c7;">📣</div>
+                <div>
+                  <div class="skill-name">jira-ticket <span style="font-weight:400;color:var(--muted);font-size:13px;">· Release Comms Mode</span></div>
+                  <div class="skill-trigger">Trigger: "this shipped", "generate release comms", "write the announcement", "draft the seller email"</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span class="skill-toggle">▼</span>
+              </div>
+            </div>
+            <div class="skill-body">
+              <div style="padding:16px 22px 4px;">
+                <div class="skill-col-label">Work type → tone</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px;">
+                  <div style="background:#f0f8ff;border-radius:6px;padding:10px 12px;font-size:12.5px;"><strong style="display:block;color:#1e40af;margin-bottom:2px;">Feature</strong>Benefit-led · "You can now…"</div>
+                  <div style="background:#f0fdf4;border-radius:6px;padding:10px 12px;font-size:12.5px;"><strong style="display:block;color:#065f46;margin-bottom:2px;">Enhancement</strong>Practical · "We've improved…"</div>
+                  <div style="background:#fff5f5;border-radius:6px;padding:10px 12px;font-size:12.5px;"><strong style="display:block;color:#c53030;margin-bottom:2px;">Bug Fix</strong>Reassuring · "We've resolved…"</div>
+                  <div style="background:#faf5ff;border-radius:6px;padding:10px 12px;font-size:12.5px;"><strong style="display:block;color:#6b21a8;margin-bottom:2px;">Integration Update</strong>Technical-but-clear</div>
+                </div>
+              </div>
+              <div class="comms-grid">
+                <div class="comms-item"><strong>📧 Seller Email</strong>Subject + what changed + how to use + opt-in or automatic</div>
+                <div class="comms-item"><strong>💬 Internal Slack Update</strong>What / Why / Impact / Status / Owner — in Slack format</div>
+                <div class="comms-item"><strong>📋 Changelog Entry</strong>One line. Present tense. No jargon. Month Year format.</div>
+                <div class="comms-item"><strong>📄 Notion Release Page</strong>Summary / What changed / Seller impact / Ops impact / Known limits</div>
+              </div>
+              <div class="skill-rules" style="border-top:1px solid var(--border);">
+                <div class="rule-item"><span class="rule-icon">🚫</span> Never includes in seller comms: method names, script names, API fields, internal ticket IDs, or the word "bug" in feature/enhancement announcements</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 5: MEASURE -->
+      <div class="phase phase-5">
+        <div class="phase-left">
+          <div class="phase-num">5</div>
+        </div>
+        <div class="phase-right">
+          <div class="phase-header">
+            <span class="phase-tag">Measure</span>
+          </div>
+          <div class="phase-title">Did It Work?</div>
+          <div class="phase-desc">4–8 weeks after launch, run a post-launch review. Score each success criterion. Feed findings back into the intake queue.</div>
+
+          <div class="skill-card">
+            <div class="skill-header" onclick="toggle(this)">
+              <div class="skill-header-left">
+                <div class="skill-icon" style="background:#fff5f5;">📊</div>
+                <div>
+                  <div class="skill-name">prd-generator <span style="font-weight:400;color:var(--muted);font-size:13px;">· Mode B</span></div>
+                  <div class="skill-trigger">Trigger: "post-launch review", "how did X perform", "did we hit our goals", "check metrics against this PRD"</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span class="skill-toggle">▼</span>
+              </div>
+            </div>
+            <div class="skill-body">
+              <div class="skill-grid">
+                <div class="skill-col">
+                  <div class="skill-col-label">📥 Input</div>
+                  <div class="io-item"><div class="io-dot" style="background:#e53e3e;"></div>Original PRD (with Success Criteria)</div>
+                  <div class="io-item"><div class="io-dot" style="background:#e53e3e;"></div>Post-launch metric data (paste or describe)</div>
+                  <div class="io-item"><div class="io-dot" style="background:#e53e3e;"></div>Time since launch</div>
+                </div>
+                <div class="skill-col">
+                  <div class="skill-col-label">📤 Output</div>
+                  <div class="io-item"><div class="io-dot" style="background:#00a651;"></div>Metrics scorecard: ✅ Hit / ⚠️ Partial / ❌ Missed / ❓ No Data</div>
+                  <div class="io-item"><div class="io-dot" style="background:#00a651;"></div>Root cause analysis for misses</div>
+                  <div class="io-item"><div class="io-dot" style="background:#00a651;"></div>Next actions: Continue / Investigate / Fix / Measure / Rethink</div>
+                  <div class="io-item"><div class="io-dot" style="background:#00a651;"></div>Verdict → feeds back to Phase 1 intake</div>
+                </div>
+              </div>
+              <div class="skill-rules">
+                <div class="skill-rules-label">Important Nuances</div>
+                <div class="rule-item"><span class="rule-icon">⏱️</span> If &lt; 4 weeks since launch → lagging indicators are too early. Focus on leading indicators only.</div>
+                <div class="rule-item"><span class="rule-icon">🔍</span> Distinguishes "feature works but adoption is low" vs "feature doesn't work" — different fixes</div>
+                <div class="rule-item"><span class="rule-icon">📈</span> Flags uncertain attribution — was it the feature, seasonality, a campaign, or a platform change?</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end phases -->
+
+    <!-- LOOP BANNER -->
+    <div class="loop-banner">
+      <div class="loop-icon">🔄</div>
+      <div class="loop-text">
+        <h3>The loop closes here</h3>
+        <p>Post-launch findings from Phase 5 become the evidence for new CRs in Phase 1. Every feature review either closes a loop or opens a new one.</p>
+      </div>
+      <div class="loop-arrow">
+        <span class="loop-step">Measure</span>
+        <span class="loop-arr">→</span>
+        <span class="loop-step">Finding</span>
+        <span class="loop-arr">→</span>
+        <span class="loop-step">New CR</span>
+        <span class="loop-arr">→</span>
+        <span class="loop-step">Intake</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- DECISION GRID -->
+<section id="when-to-use">
+  <div class="container">
+    <div class="section-label">Decision Guide</div>
+    <div class="section-title">What do I have? Where do I start?</div>
+    <div class="section-sub">Map your current situation to the right entry point.</div>
+
+    <div class="decision-grid">
+      <table>
+        <thead>
+          <tr>
+            <th>Your situation</th>
+            <th>Start here</th>
+            <th>Why</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>"Got a Jira CR from ops / sales / CS"</td>
+            <td><span class="skill-pill" style="background:#f3f0ff;color:#7c3aed;">🔍 cr-review</span></td>
+            <td>Validate and structure the CR before it enters the backlog</td>
+          </tr>
+          <tr>
+            <td>"Got a rough CR — Use Case is unclear"</td>
+            <td><span class="skill-pill" style="background:#f3f0ff;color:#7c3aed;">🔍 cr-review</span></td>
+            <td>Structures it and generates targeted clarification questions</td>
+          </tr>
+          <tr>
+            <td>"CR is accepted. Need a PRD for stakeholder alignment"</td>
+            <td><span class="skill-pill" style="background:#e8f4fd;color:#0087d4;">📝 prd-generator</span></td>
+            <td>Mode A — converts CR to aligned PRD with success criteria</td>
+          </tr>
+          <tr>
+            <td>"PRD is approved. Engineering is ready to start"</td>
+            <td><span class="skill-pill" style="background:#e6f7ef;color:#065f46;">🎫 jira-ticket</span></td>
+            <td>Converts PRD into Background → Release Notes format</td>
+          </tr>
+          <tr>
+            <td>"Ticket is written. Is it ready to hand off?"</td>
+            <td><span class="skill-pill" style="background:#e6f7ef;color:#065f46;">✅ prd-jira-review</span></td>
+            <td>Scores all 6 sections + API/seller/feasibility domain checks</td>
+          </tr>
+          <tr>
+            <td>"Ticket has UI changes — engineer needs a mock"</td>
+            <td><span class="skill-pill" style="background:#e6f7ef;color:#065f46;">🎨 jira-ticket → "build the mock"</span></td>
+            <td>Skill auto-detects UI signals and prompts for design handoff</td>
+          </tr>
+          <tr>
+            <td>"Feature just shipped. Need seller email + changelog"</td>
+            <td><span class="skill-pill" style="background:#fef3c7;color:#92400e;">📣 jira-ticket → "this shipped"</span></td>
+            <td>Release comms mode generates all 4 outputs from the ticket</td>
+          </tr>
+          <tr>
+            <td>"It's been 6 weeks since launch. Did it work?"</td>
+            <td><span class="skill-pill" style="background:#fff5f5;color:#e53e3e;">📊 prd-generator Mode B</span></td>
+            <td>Scores success criteria against real data, suggests next actions</td>
+          </tr>
+          <tr>
+            <td>"I have a strategy PRD — someone shared it for review"</td>
+            <td><span class="skill-pill" style="background:#e6f7ef;color:#065f46;">✅ prd-jira-review</span></td>
+            <td>Auto-detects it's a strategy doc, redirects to jira-ticket first</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TICKET FORMAT -->
+<section id="ticket-format">
+  <div class="container">
+    <div class="section-label">Reference</div>
+    <div class="section-title">Canonical Unicommerce Ticket Format</div>
+    <div class="section-sub">Every Jira ticket — regardless of feature area or integration — must follow this section order. These are the rules the jira-ticket and prd-jira-review skills enforce.</div>
+
+    <div class="ticket-format">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Section</th>
+            <th>What it must contain</th>
+            <th>Common mistake</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>📘</td>
+            <td>Background</td>
+            <td>Current system behaviour only. Method names, API fields, formulas. What happens today before any change.</td>
+            <td>Describing the proposed fix here instead of current state</td>
+          </tr>
+          <tr>
+            <td>🔴</td>
+            <td>Pain Point</td>
+            <td>Root cause in one line, then numbered operational consequences: pickup refusal, billing mismatch, manual reconciliation, seller escalation.</td>
+            <td>"Causes issues" — not a pain point. Name the consequence.</td>
+          </tr>
+          <tr>
+            <td>✅</td>
+            <td>Solution</td>
+            <td>One paragraph. Name any new UI element explicitly. Option table if configurable. Default/fallback behaviour always stated.</td>
+            <td>Multiple problems in one section. UI element unnamed. Blank config not addressed.</td>
+          </tr>
+          <tr>
+            <td>🔧</td>
+            <td>Scope of Work</td>
+            <td>User story with correct persona. Numbered tasks specific enough to assign. In Scope / Out of Scope drawn explicitly. Related flows covered.</td>
+            <td>Persona too generic ("user" or "admin"). Tasks vague. In/Out of scope missing.</td>
+          </tr>
+          <tr>
+            <td>🧪</td>
+            <td>Testing</td>
+            <td>Table with: happy path, edge cases, blank/default config (backward compat), reverse flow if applicable. Expected results specific.</td>
+            <td>Happy path only. No backward compat test. Expected results vague ("should work").</td>
+          </tr>
+          <tr>
+            <td>📣</td>
+            <td>Release Notes</td>
+            <td>Written for sellers/ops. What changed, why it matters, how to use it. Opt-in vs automatic. No method names or jargon. Under 10 lines.</td>
+            <td>Technical jargon. Doesn't state if opt-in or automatic. No "Applicable to" line.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TEAM RULES -->
+<section id="rules">
+  <div class="container">
+    <div class="section-label">Team Rules</div>
+    <div class="section-title">How We Use This System</div>
+    <div class="section-sub">Non-negotiables for the PM team and engineering team.</div>
+
+    <div class="rules-grid">
+      <div class="rules-card">
+        <div class="rules-header">
+          <div class="rules-header-icon" style="background:#e8f4fd;">📋</div>
+          <div>
+            <h3>PM Rules</h3>
+            <span>For Ritesh and the product team</span>
+          </div>
+        </div>
+        <div class="rules-body">
+          <div class="rule">
+            <div class="rule-num" style="background:#e8f4fd;color:#0087d4;">1</div>
+            No CR moves to the backlog without passing cr-review. Slack messages and verbal asks are not accepted requirements.
+          </div>
+          <div class="rule">
+            <div class="rule-num" style="background:#e8f4fd;color:#0087d4;">2</div>
+            No PRD goes to engineering without a sign-off table. Product, Engineering, and Design must all be checked.
+          </div>
+          <div class="rule">
+            <div class="rule-num" style="background:#e8f4fd;color:#0087d4;">3</div>
+            Every Jira ticket is reviewed with prd-jira-review before it enters a sprint. Verdict must be "Ready to hand off" or "Needs minor fixes."
+          </div>
+          <div class="rule">
+            <div class="rule-num" style="background:#e8f4fd;color:#0087d4;">4</div>
+            If a ticket has UI changes, a mock must accompany it. Use the unicommerce-design-system skill — the jira-ticket skill will prompt you.
+          </div>
+          <div class="rule">
+            <div class="rule-num" style="background:#e8f4fd;color:#0087d4;">5</div>
+            Every shipped feature gets a post-launch review at 4 and 8 weeks. Use prd-generator Mode B. Findings go back into the intake queue.
+          </div>
+        </div>
+      </div>
+
+      <div class="rules-card">
+        <div class="rules-header">
+          <div class="rules-header-icon" style="background:#e6f7ef;">⚙️</div>
+          <div>
+            <h3>Engineering Rules</h3>
+            <span>What to expect from every ticket</span>
+          </div>
+        </div>
+        <div class="rules-body">
+          <div class="rule">
+            <div class="rule-num" style="background:#e6f7ef;color:#00a651;">1</div>
+            Every ticket will have all 6 sections. If a section is missing, return it to PM before starting work — not mid-sprint.
+          </div>
+          <div class="rule">
+            <div class="rule-num" style="background:#e6f7ef;color:#00a651;">2</div>
+            Background = current state only. If the Background section describes a solution, flag it — it's a red flag for scope clarity.
+          </div>
+          <div class="rule">
+            <div class="rule-num" style="background:#e6f7ef;color:#00a651;">3</div>
+            Default/fallback behaviour will always be stated. If it's not — ask. Never assume.
+          </div>
+          <div class="rule">
+            <div class="rule-num" style="background:#e6f7ef;color:#00a651;">4</div>
+            UI tickets will include a mock in Unicommerce design language. Don't start UI work without it.
+          </div>
+          <div class="rule">
+            <div class="rule-num" style="background:#e6f7ef;color:#00a651;">5</div>
+            When a ticket ships, tell the PM the work type (Feature / Enhancement / Bug Fix / Integration update) — this triggers the release comms workflow.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>Unicommerce PM Workflow System</strong> · Owner: Ritesh Dhakar · ritesh.dhakar@unicommerce.com</p>
+  <p style="margin-top:6px;">4 skills · cr-review · prd-generator · jira-ticket · prd-jira-review · Last updated March 2026</p>
+</footer>
+
+<script>
+  function toggle(header) {
+    const card = header.closest('.skill-card');
+    const body = card.querySelector('.skill-body');
+    const arrow = header.querySelector('.skill-toggle');
+
+    // Close all others
+    document.querySelectorAll('.skill-body.open').forEach(b => {
+      if (b !== body) {
+        b.classList.remove('open');
+        b.closest('.skill-card').querySelector('.skill-toggle').classList.remove('open');
+      }
+    });
+
+    body.classList.toggle('open');
+    arrow.classList.toggle('open');
+  }
+</script>
+
+</body>
+</html>
